@@ -1,5 +1,7 @@
 # Todo List
 
+- [ ] State machine 
+
 - [ ] Base game
     - [ ] Generation of a game board with confiruable size and mines count
     - [ ] Randomized mines placement
@@ -25,6 +27,7 @@
     - [ ] Replace triangles with flag sprites
     - [ ] Make numbers colorful based on their number
     - [ ] Style loss and win windows
+    - [ ] Animate reveal
 <br/><br/>
 - [ ] Leaderboard
     - [ ] Autosaved leaderboard
