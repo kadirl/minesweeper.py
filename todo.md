@@ -1,6 +1,6 @@
 # Todo List
 
-- [ ] State machine 
+- [x] State machine 
 
 - [ ] Base game
     - [ ] Generation of a game board with confiruable size and mines count
