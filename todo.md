@@ -3,11 +3,11 @@
 - [x] State machine 
 
 - [ ] Base game
-    - [ ] Generation of a game board with confiruable size and mines count
-    - [ ] Randomized mines placement
-    - [ ] Ability to reveal a cell
-    - [ ] Ability to flag a cell
-    - [ ] Ability to unflaf a cell
+    - [x] Generation of a game board with confiruable size and mines count
+    - [x] Randomized mines placement
+    - [x] Ability to reveal a cell
+    - [x] Ability to flag a cell
+    - [x] Ability to unflaf a cell
     - [ ] Loss window
     - [ ] Win window
     - [ ] Ability to restart a game after the end 
@@ -23,9 +23,9 @@
         - [ ] Configurable
 <br/><br/>
 - [ ] Improved look
-    - [ ] Replace ellipses with mine sprites
-    - [ ] Replace triangles with flag sprites
-    - [ ] Make numbers colorful based on their number
+    - [x] Replace ellipses with mine sprites
+    - [x] Replace triangles with flag sprites
+    - [x] Make numbers colorful based on their number
     - [ ] Style loss and win windows
     - [ ] Animate reveal
 <br/><br/>
