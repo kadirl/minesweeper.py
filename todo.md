@@ -8,25 +8,25 @@
     - [x] Ability to reveal a cell
     - [x] Ability to flag a cell
     - [x] Ability to unflaf a cell
-    - [ ] Loss window
-    - [ ] Win window
-    - [ ] Ability to restart a game after the end 
+    - [x] Loss window
+    - [x] Win window
+    - [x] Ability to restart a game after the end 
     - [ ] Ability to restart a game durign the game
 <br/><br/>
 - [ ] Basic features
-    - [ ] Minecounter
+    - [x] Minecounter
     - [ ] Timer
-    - [ ] Diffuculty selector
-        - [ ] Simple
-        - [ ] Medium
-        - [ ] Difficult
+    - [x] Diffuculty selector
+        - [x] Simple
+        - [x] Medium
+        - [x] Difficult
         - [ ] Configurable
 <br/><br/>
 - [ ] Improved look
     - [x] Replace ellipses with mine sprites
     - [x] Replace triangles with flag sprites
     - [x] Make numbers colorful based on their number
-    - [ ] Style loss and win windows
+    - [x] Style loss and win windows
     - [ ] Animate reveal
 <br/><br/>
 - [ ] Leaderboard
