@@ -3,6 +3,10 @@ from game.minefield import Minefield
 from assets import *
 import pygame
 
+continue_rect = CONTINUE_BUTTON.get_rect()
+continue_rect.x = 313
+continue_rect.y = 720
+
 class GameState(NullState):
     def __init__(self, *, config):
         super().__init__(config=config)
@@ -42,18 +46,24 @@ class GameState(NullState):
     def handle_events(self, events=None):
         screen_size = self.config.get('WIDTH'), self.config.get('HEIGHT')
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and not self.state_manager.data.minefield.lost:
                 if event.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     self.state_manager.data.minefield.reveal_cell(mouse_pos, screen_size)
                 elif event.button == 3:
                     mouse_pos = pygame.mouse.get_pos()
                     self.state_manager.data.minefield.flag_cell(mouse_pos, screen_size)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if continue_rect.collidepoint(mouse_pos):
+                        self.state_manager.set_state('LOST')
+
 
     def update(self):
         if self.state_manager.data.minefield.lost:
             print('GAME OVER')
-            self.state_manager.set_state('LOST')
+            # self.state_manager.set_state('LOST')
         if self.state_manager.data.minefield.win:
             print('WIN')
             self.state_manager.set_state('WIN')
@@ -73,3 +83,9 @@ class GameState(NullState):
         font = pygame.font.Font(FONT, 20)
         text = font.render(str(mines_left), True, (0, 0, 0))
         screen.blit(text, (57, 23))
+
+        if self.state_manager.data.minefield.lost:
+            screen.blit(CONTINUE_BUTTON, continue_rect)
+            font = pygame.font.Font(FONT, 24)
+            text = font.render("You Lost", True, (0, 0, 0))
+            screen.blit(text, (304, 21))

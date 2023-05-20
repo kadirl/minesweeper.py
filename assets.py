@@ -43,6 +43,7 @@ LOST_FACE = pygame.image.load(os.path.join(sprites_directory, "lost.png"))
 EASY_BUTTON = pygame.image.load(os.path.join(sprites_directory, "easy_button.png"))
 MEDIUM_BUTTON = pygame.image.load(os.path.join(sprites_directory, "medium_button.png"))
 HARD_BUTTON = pygame.image.load(os.path.join(sprites_directory, "hard_button.png"))
+CONTINUE_BUTTON = pygame.image.load(os.path.join(sprites_directory, "continue_button.png"))
 
 
 # Fonts definition
