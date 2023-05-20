@@ -36,14 +36,14 @@ MINE = pygame.image.load(os.path.join(sprites_directory, "mine.png"))
 CROSSED_MINE = pygame.image.load(os.path.join(sprites_directory, "crossed_mine.png"))
 FLAG = pygame.image.load(os.path.join(sprites_directory, "flag.png"))
 
-sprites_list = [
-    UNREVEALED_CELL,
-    REVEALED_CELL,
-    BOMB_CELL,
-    MINE,
-    CROSSED_MINE,
-    FLAG
-]
+START_FACE = pygame.image.load(os.path.join(sprites_directory, "start.png"))
+WIN_FACE = pygame.image.load(os.path.join(sprites_directory, "win.png"))
+LOST_FACE = pygame.image.load(os.path.join(sprites_directory, "lost.png"))
+
+EASY_BUTTON = pygame.image.load(os.path.join(sprites_directory, "easy_button.png"))
+MEDIUM_BUTTON = pygame.image.load(os.path.join(sprites_directory, "medium_button.png"))
+HARD_BUTTON = pygame.image.load(os.path.join(sprites_directory, "hard_button.png"))
+
 
 # Fonts definition
 

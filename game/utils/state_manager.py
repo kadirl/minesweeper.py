@@ -2,28 +2,16 @@ import logging
 from game.utils.config import Config
 
 class GameData:
-    def __init__(self, *, score=0, player_name=None, field_size=(), mine_count=None, minefield=[]):
-        self._score = score
-        self._player_name = player_name
-        self._field_size = field_size
-        self._mine_count = mine_count
-        self._minefield = minefield
+    def __init__(self, *, score=0, player_name=None, field_size=(), difficulty=2, mine_count=None, minefield=[]):
+        self.score = score
+        self.player_name = player_name
+        self.field_size = field_size
+        self.mine_count = mine_count
+        self.minefield = minefield
+        self.difficulty = difficulty
 
-    @staticmethod
-    def _create_property(attribute_name):
-        def getter(self):
-            return getattr(self, f"_{attribute_name}")
-
-        def setter(self, value):
-            setattr(self, f"_{attribute_name}", value)
-
-        return property(getter, setter)
-    
-    score = _create_property("score")
-    player_name = _create_property("player_name")
-    field_size = _create_property("field_size")
-    mine_count = _create_property("mine_count")
-    minefield = _create_property("minefield")
+    def set_difficulty(self, d):
+        self.difficulty = d
 
 class NullState:
     _null_state_exception = Exception("NullStateException: state isn't set")
@@ -36,7 +24,7 @@ class NullState:
     def set_state_manager(self, state_manager):
         self.state_manager = state_manager
 
-    def handle_transition(self):
+    def handle_transition(self, d=0):
         raise self._null_state_exception
 
     def handle_events(self, events=None):
@@ -59,11 +47,10 @@ class StateManager:
     def register_state(self, state_name, state_instance):
         self.states[state_name] = state_instance
         state_instance.set_state_manager(self)
-        state_instance.handle_transition()
 
-    def set_state(self, state_name):
+    def set_state(self, state_name, d=0):
         self.current_state = self.states[state_name]
-        self.states[state_name].handle_transition()
+        self.states[state_name].handle_transition(d)
 
     def handle_events(self, events):
         self.current_state.handle_events(events)

@@ -12,6 +12,7 @@ class Cell:
         self.flagged = False
         self.neighbors = -1
         self.lost = False ######
+        self.win = False
         self.font = None
 
     def scale_sprite(self, sprite, size):
@@ -92,6 +93,8 @@ class Minefield:
         self.minefield = []
         self.mines_placed = False
         self.lost = False
+        self.win = False
+        self.mines_left = mines_count
 
     def find_relative_pos(self, pos, screen_size):
         width, height = screen_size
@@ -117,7 +120,7 @@ class Minefield:
             if row + i < 0 or row + i >= self.rows : continue
             for j in [-1, 0, 1]:
                 if col + j < 0 or col + j >= self.cols : continue
-                excluded_positions.add((i, j))
+                excluded_positions.add((row+i, col+j))
 
         while len(mine_positions) < self.mines_count:
             row = random.randint(0, self.rows - 1)
@@ -126,6 +129,7 @@ class Minefield:
             if (row, col) not in excluded_positions:
                 mine_positions.add((row, col))
 
+        print(excluded_positions)
         for position in mine_positions:
             row, col = position
             self.minefield[row][col].make_mine()
@@ -146,14 +150,14 @@ class Minefield:
                     self.minefield[i][j].neighbors = count
 
     def reveal_neighbour_cells(self, row, col, first=False):
-        print("reveled", row, col)
+        # print("reveled", row, col)
         cell = self.minefield[row][col]
         if not first:
             if cell.revealed or cell.flagged:
                 return
 
         cell.reveal()
-        print(cell.neighbors)
+        # print(cell.neighbors)
         if cell.neighbors == 0:
             for i in [-1, 0, 1]:
                 if row + i < 0 or row + i >= self.rows:
@@ -161,11 +165,12 @@ class Minefield:
                 for j in [-1, 0, 1]:
                     if col + j < 0 or col + j >= self.cols:
                         continue
-                    print("neighbour", row + i, col + j)
+                    # print("neighbour", row + i, col + j)
                     self.reveal_neighbour_cells(row + i, col + j)
 
     def reveal_cell(self, mouse_pos, screen_size):
         x, y = self.find_relative_pos(mouse_pos, screen_size)
+        if x < 0 or y < 0: return
         col = x // self.cell_size
         row = y // self.cell_size
         cell = self.minefield[row][col]
@@ -175,7 +180,6 @@ class Minefield:
                 self.place_mines(row, col)
                 self.calculate_field()
                 self.mines_placed = True
-                return
             
             if cell.reveal():
                 print("lost")
@@ -187,7 +191,7 @@ class Minefield:
 
     def flag_cell(self, mouse_pos, screen_size):
         x, y = self.find_relative_pos(mouse_pos, screen_size)
-
+        if x < 0 or y < 0: return
         col = x // self.cell_size
         row = y // self.cell_size
 
@@ -196,8 +200,21 @@ class Minefield:
         if not self.minefield[row][col].revealed:
             if self.minefield[row][col].flagged:
                 self.minefield[row][col].unflag()
+                self.mines_left += 1
+                if self.minefield[row][col].is_mine():
+                    self.mines_count += 1
+
             else:
                 self.minefield[row][col].flag()
+                self.mines_left -= 1
+                if self.minefield[row][col].is_mine():
+                    self.mines_count -= 1
+
+        if self.mines_count == 0:
+            self.game_win()
+
+    def game_win(self):
+        self.win = True
 
     def game_lost(self):
         self.lost = True
@@ -210,6 +227,8 @@ class Minefield:
         field_surface = pygame.Surface((self.surface_width, self.surface_height))
         field_surface.fill(BACKGROUND)
 
+        # print(self.mines_count, self.mines_left)
+    
         for i, row in enumerate(self.minefield):
             for j, cell in enumerate(row):
                 cell_image = cell.render()
@@ -217,4 +236,4 @@ class Minefield:
                 cell_y = i * self.cell_size
                 field_surface.blit(cell_image, (cell_x, cell_y))
 
-        return field_surface
+        return field_surface, self.mines_left

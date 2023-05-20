@@ -3,6 +3,10 @@ import sys
 from game.utils.config import Config
 from game.utils.state_manager import StateManager, GameData
 from game.states.game_state import GameState
+from game.states.start_state import StartState
+from game.states.lost_state import LostState
+from game.states.win_state import WinState
+
 import time
 
 config = Config(
@@ -15,10 +19,14 @@ config = Config(
 # Initialize Pygame
 pygame.init()
 
-game_data = GameData(score=0, player_name="John Doe", field_size=(10, 10), mine_count=15)
+game_data = GameData(score=0, player_name="John Doe")
 state_manager = StateManager(data=game_data)
+state_manager.register_state('START', StartState(config=config))
 state_manager.register_state('GAME', GameState(config=config))
-state_manager.set_state('GAME')
+state_manager.register_state('LOST', LostState(config=config))
+state_manager.register_state('WIN', WinState(config=config))
+
+state_manager.set_state('START')
 
 screen = pygame.display.set_mode((config.get('WIDTH'), config.get('HEIGHT')))
 
