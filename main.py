@@ -35,4 +35,4 @@ while running:
     state_manager.update()
     state_manager.render(screen)
 
-    pygame.display.flip()
+    pygame.display.flip() 
