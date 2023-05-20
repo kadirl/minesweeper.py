@@ -22,6 +22,11 @@ state_manager = StateManager()
 state_manager.register_state('GAME', GameState(config=config))
 state_manager.set_state('GAME')
 
+state_manager.set_data({
+    'score': 0,
+    'player_name': 'John Doe'
+})
+
 screen = pygame.display.set_mode((config.get('WIDTH'), config.get('HEIGHT')))
 
 running = True
@@ -33,7 +38,7 @@ while running:
             pygame.quit()
             sys.exit()
 
-    state_manager.handle_events(events, state_manager)
+    state_manager.handle_events(events)
     state_manager.update()
     state_manager.render(screen)
 
