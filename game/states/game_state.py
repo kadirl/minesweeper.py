@@ -42,22 +42,34 @@ class GameState(NullState):
         minefield.generate_field()
         data.minefield = minefield
 
+        self.clock = pygame.time.Clock()
+        self.timer = 0
+
+        print('time reset')
 
     def handle_events(self, events=None):
         screen_size = self.config.get('WIDTH'), self.config.get('HEIGHT')
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN and not self.state_manager.data.minefield.lost:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state_manager.set_state('GAME')
+            if event.type == pygame.MOUSEBUTTONDOWN and not self.state_manager.data.minefield.lost and not self.state_manager.data.minefield.win:
                 if event.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     self.state_manager.data.minefield.reveal_cell(mouse_pos, screen_size)
                 elif event.button == 3:
                     mouse_pos = pygame.mouse.get_pos()
                     self.state_manager.data.minefield.flag_cell(mouse_pos, screen_size)
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and self.state_manager.data.minefield.lost:
                 if event.button == 1:
                     mouse_pos = pygame.mouse.get_pos()
                     if continue_rect.collidepoint(mouse_pos):
                         self.state_manager.set_state('LOST')
+            if event.type == pygame.MOUSEBUTTONDOWN and self.state_manager.data.minefield.win:
+                if event.button == 1:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if continue_rect.collidepoint(mouse_pos):
+                        self.state_manager.set_state('WIN')
 
 
     def update(self):
@@ -66,7 +78,9 @@ class GameState(NullState):
             # self.state_manager.set_state('LOST')
         if self.state_manager.data.minefield.win:
             print('WIN')
-            self.state_manager.set_state('WIN')
+            # self.state_manager.set_state('WIN')
+        if not self.state_manager.data.minefield.lost and not self.state_manager.data.minefield.win:
+            self.timer += self.clock.get_time() / 1000
 
     def render(self, screen):
         screen.fill(BACKGROUND)
@@ -84,8 +98,21 @@ class GameState(NullState):
         text = font.render(str(mines_left), True, (0, 0, 0))
         screen.blit(text, (57, 23))
 
+        font = pygame.font.Font(FONT, 20)
+        text = font.render(f"{self.timer:.2f}", True, (0, 0, 0))
+        rect_text = text.get_rect()
+        screen.blit(text, (800-rect_text.width-20, 21))
+
         if self.state_manager.data.minefield.lost:
             screen.blit(CONTINUE_BUTTON, continue_rect)
             font = pygame.font.Font(FONT, 24)
             text = font.render("You Lost", True, (0, 0, 0))
             screen.blit(text, (304, 21))
+
+        if self.state_manager.data.minefield.win:
+            screen.blit(CONTINUE_BUTTON, continue_rect)
+            font = pygame.font.Font(FONT, 24)
+            text = font.render("You Win", True, (0, 0, 0))
+            screen.blit(text, (304, 21))
+        
+        self.clock.tick(60)

@@ -2,7 +2,7 @@
 
 - [x] State machine 
 
-- [ ] Base game
+- [x] Base game
     - [x] Generation of a game board with confiruable size and mines count
     - [x] Randomized mines placement
     - [x] Ability to reveal a cell
@@ -11,11 +11,11 @@
     - [x] Loss window
     - [x] Win window
     - [x] Ability to restart a game after the end 
-    - [ ] Ability to restart a game durign the game
+    - [x] Ability to restart a game durign the game
 <br/><br/>
 - [ ] Basic features
     - [x] Minecounter
-    - [ ] Timer
+    - [x] Timer
     - [x] Diffuculty selector
         - [x] Simple
         - [x] Medium
